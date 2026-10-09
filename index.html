@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0868ff" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <title>Sota's Glute Club</title>
+    <style>
+      :root {
+        font-family:
+          ui-rounded,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        color: #111827;
+        background: #eaf5ff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: linear-gradient(160deg, #e7f5ff, #fff 45%, #eaf4ff);
+        min-height: 100vh;
+      }
+      main {
+        max-width: 680px;
+        margin: auto;
+        padding: 20px 16px 100px;
+      }
+      header {
+        background: #0b101b;
+        color: white;
+        border-radius: 24px;
+        padding: 24px;
+        background-image: radial-gradient(
+          circle at 95% 0%,
+          #168bff 0,
+          transparent 45%
+        );
+      }
+      h1 {
+        font-size: 27px;
+        margin: 8px 0;
+      }
+      h2 {
+        font-size: 19px;
+        margin: 0 0 12px;
+      }
+      h3 {
+        font-size: 15px;
+        margin: 12px 0 6px;
+      }
+      .eyebrow {
+        color: #9dd5ff;
+        font-size: 12px;
+        letter-spacing: 2px;
+        font-weight: 800;
+      }
+      .muted {
+        color: #5e6c80;
+        font-size: 13px;
+      }
+      .hero-sub {
+        color: #c9e4ff;
+        font-size: 13px;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid #cce7ff;
+        border-radius: 20px;
+        padding: 18px;
+        margin-top: 15px;
+        box-shadow: 0 4px 18px #1262ad0a;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .metric {
+        background: #eff7ff;
+        padding: 14px;
+        border-radius: 14px;
+      }
+      .metric strong {
+        display: block;
+        color: #076cf1;
+        font-size: 22px;
+      }
+      .metric small {
+        font-size: 11px;
+        color: #516275;
+      }
+      .pill {
+        display: inline-block;
+        background: #e4f2ff;
+        color: #0069dc;
+        border-radius: 100px;
+        padding: 6px 10px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .tabs {
+        display: flex;
+        gap: 6px;
+        position: sticky;
+        top: 0;
+        background: #eaf5ffed;
+        padding: 12px 0;
+        z-index: 2;
+        overflow: auto;
+      }
+      .tabs button {
+        flex: 1;
+        white-space: nowrap;
+        padding: 11px 8px;
+        font-size: 12px;
+        border-radius: 12px;
+        border: 0;
+        background: white;
+        color: #32506e;
+        font-weight: 700;
+      }
+      .tabs button.active {
+        background: #076cf1;
+        color: white;
+      }
+      section[hidden] {
+        display: none;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        margin: 10px 0 5px;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid #bedcf8;
+        background: #fbfdff;
+        padding: 12px;
+        border-radius: 11px;
+        font: inherit;
+        color: #111827;
+      }
+      button {
+        cursor: pointer;
+      }
+      .primary {
+        background: #096ef2;
+        color: #fff;
+        border: 0;
+        padding: 12px 15px;
+        border-radius: 12px;
+        font-weight: 750;
+      }
+      .secondary {
+        background: #e7f3ff;
+        color: #0757b7;
+        border: 0;
+        padding: 11px;
+        border-radius: 11px;
+        font-weight: 700;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .row > * {
+        min-width: 0;
+      }
+      .exercise {
+        border-top: 1px solid #e6f0fa;
+        padding: 12px 0;
+      }
+      .exercise:first-child {
+        border: 0;
+      }
+      .exercise .name {
+        font-weight: 750;
+      }
+      .exercise .note {
+        font-size: 12px;
+        color: #617287;
+        margin: 4px 0 8px;
+      }
+      .exercise input {
+        max-width: 105px;
+        padding: 8px;
+      }
+      .progress {
+        height: 11px;
+        background: #dbeafe;
+        border-radius: 30px;
+        overflow: hidden;
+      }
+      .bar {
+        height: 100%;
+        background: #086cff;
+        width: 0;
+        transition: width 0.2s;
+      }
+      .check {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 12px 0;
+        font-size: 14px;
+      }
+      .check input {
+        width: 19px;
+        height: 19px;
+        accent-color: #086cff;
+      }
+      .meal {
+        padding: 10px 0;
+        border-top: 1px solid #e7f0fb;
+        font-size: 14px;
+      }
+      .meal:first-child {
+        border: 0;
+      }
+      .alert {
+        background: #eff6ff;
+        border-left: 4px solid #1378f8;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .danger {
+        color: #aa3450;
+      }
+      nav {
+        font-size: 12px;
+      }
+      footer {
+        text-align: center;
+        color: #65778b;
+        font-size: 11px;
+        padding: 20px;
+      }
+      .small {
+        font-size: 12px;
+      }
+      ul {
+        padding-left: 20px;
+        line-height: 1.7;
+      }
+      @media (min-width: 550px) {
+        .grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="eyebrow">✦ THE BLUEPRINT ✦</div>
+        <h1>SOTA'S GLUTE CLUB 💙</h1>
+        <div class="hero-sub">Fuel • Lift • Recover • Grow • Maintain</div>
+        <p class="small">
+          Your 8-week at-home strength & healthy weight-gain companion.
+        </p>
+      </header>
+      <nav class="tabs" id="tabs">
+        <button class="active" data-tab="today">Today</button
+        ><button data-tab="train">Train</button
+        ><button data-tab="fuel">Fuel</button
+        ><button data-tab="track">Track</button
+        ><button data-tab="settings">Setup</button>
+      </nav>
+      <section id="today">
+        <div class="card">
+          <div class="row">
+            <h2>Your dashboard ✨</h2>
+            <span class="pill" id="weekTag">Week 1 of 8</span>
+          </div>
+          <div class="grid">
+            <div class="metric">
+              <strong id="latestWeight">—</strong
+              ><small>Latest weight • lb</small>
+            </div>
+            <div class="metric">
+              <strong id="goalWeight">—</strong
+              ><small>Long-term goal • lb</small>
+            </div>
+            <div class="metric">
+              <strong id="calTarget">—</strong><small>Daily kcal target</small>
+            </div>
+            <div class="metric">
+              <strong id="protTarget">—</strong><small>Daily protein</small>
+            </div>
+          </div>
+          <p class="muted">Your private targets can be added in Setup.</p>
+          <div class="progress"><div class="bar" id="weightBar"></div></div>
+          <p class="muted" id="weightText"></p>
+        </div>
+        <div class="card">
+          <h2>Today's checklist</h2>
+          <div id="checklist"></div>
+          <p class="muted" id="checkText"></p>
+        </div>
+        <div class="card">
+          <h2>Today's focus</h2>
+          <p id="todayWorkout"></p>
+          <p class="muted">
+            Aim for consistency, not perfection. Your glutes grow with food and
+            recovery too.
+          </p>
+        </div>
+        <div class="card alert">
+          This app is a general planning tool, not medical advice. For a safe,
+          personalized weight-gain plan, consider checking in with a clinician
+          or registered dietitian. Prioritize gradual progress and strength.
+        </div>
+      </section>
+      <section id="train" hidden>
+        <div class="card">
+          <h2>Home glute sessions 🏋🏽‍♀️</h2>
+          <p class="muted">
+            Choose a day. Start with two hard glute days and make Saturday
+            optional. Use a loaded backpack, dumbbells, or bands if available.
+          </p>
+          <label for="day">Workout</label
+          ><select id="day">
+            <option value="A">Monday • Glute strength</option>
+            <option value="B">Thursday • Glute volume</option>
+            <option value="C">Saturday • Optional accessories</option>
+            <option value="U">Tuesday • Upper body + core</option>
+          </select>
+          <div id="exercises"></div>
+          <button class="primary" id="saveWorkout">Save workout log</button>
+          <p class="muted" id="workoutSaved"></p>
+        </div>
+        <div class="card">
+          <h2>8-week progression</h2>
+          <ul>
+            <li>
+              Weeks 1–2: establish comfortable loads, leave 2–3 reps in reserve.
+            </li>
+            <li>
+              Weeks 3–4: add reps before weight, without sacrificing form.
+            </li>
+            <li>
+              Weeks 5–6: gradually increase resistance if recovery is good.
+            </li>
+            <li>
+              Weeks 7–8: keep progressing; reduce volume if fatigue builds.
+            </li>
+          </ul>
+          <p class="muted">
+            Rest 2–3 minutes for demanding sets; 60–90 seconds for accessories.
+            Avoid deliberately arching your lower back during bridges or
+            thrusts.
+          </p>
+        </div>
+      </section>
+      <section id="fuel" hidden>
+        <div class="card">
+          <h2>Nutrition targets 🍓</h2>
+          <p class="muted">
+            A starting estimate—not a medical prescription. Adjust using 2-week
+            weight averages and appetite.
+          </p>
+          <div class="grid">
+            <div class="metric">
+              <strong id="fuelCal">—</strong><small>kcal / day</small>
+            </div>
+            <div class="metric">
+              <strong id="fuelProt">—</strong><small>protein / day</small>
+            </div>
+          </div>
+          <label>Calories eaten today</label
+          ><input
+            type="number"
+            id="calEaten"
+            min="0"
+            placeholder="e.g. 2050"
+          /><label>Protein eaten today (g)</label
+          ><input
+            type="number"
+            id="proteinEaten"
+            min="0"
+            placeholder="e.g. 92"
+          /><button class="primary" style="margin-top: 12px" id="saveFuel">
+            Save today's intake
+          </button>
+          <p class="muted" id="fuelSaved"></p>
+        </div>
+        <div class="card">
+          <h2>Sample meal structure</h2>
+          <div class="meal">
+            <b>Breakfast</b> • Oats, whole milk, banana, peanut butter, Greek
+            yogurt
+          </div>
+          <div class="meal">
+            <b>Lunch</b> • Jerk chicken, rice, vegetables, avocado
+          </div>
+          <div class="meal">
+            <b>Snack</b> • Strawberry-banana smoothie with yogurt
+          </div>
+          <div class="meal"><b>Dinner</b> • Chicken Alfredo, broccoli</div>
+          <div class="meal">
+            <b>Evening snack</b> • Greek yogurt, granola, berries
+          </div>
+          <p class="muted">
+            3 meals + 2 snacks. Aim for 80–105 g protein/day. Include carbs and
+            fats—weight gain cannot be exclusively muscle.
+          </p>
+        </div>
+        <div class="card">
+          <h2>Grocery staples</h2>
+          <p class="small">
+            Eggs, chicken, salmon, tofu, Greek yogurt, rice, pasta, oats,
+            potatoes, whole milk, nuts, avocado, olive oil, fruit and
+            vegetables.
+          </p>
+        </div>
+      </section>
+      <section id="track" hidden>
+        <div class="card">
+          <h2>Weekly check-in 📈</h2>
+          <label>Date</label><input type="date" id="measureDate" /><label
+            >Weight (lb)</label
+          ><input
+            type="number"
+            step="0.1"
+            id="measureWeight"
+            placeholder="Enter weight"
+          /><label>Hip/glute circumference (in, optional)</label
+          ><input
+            type="number"
+            step="0.1"
+            id="measureHip"
+            placeholder="Optional"
+          /><label>Notes (strength, appetite, energy)</label
+          ><textarea
+            id="measureNotes"
+            rows="3"
+            placeholder="How did this week go?"
+          ></textarea
+          ><button class="primary" style="margin-top: 12px" id="saveMeasure">
+            Save check-in
+          </button>
+        </div>
+        <div class="card">
+          <div class="row">
+            <h2>History</h2>
+            <button class="secondary" id="exportData">Export data</button>
+          </div>
+          <div id="history"></div>
+        </div>
+        <div class="card">
+          <h2>After week 8</h2>
+          <p class="small">
+            Continue strength training at least twice weekly. Adjust intake
+            slowly until weight stabilizes over several weeks. Your personal
+            target can remain a longer-term milestone.
+          </p>
+        </div>
+      </section>
+      <section id="settings" hidden>
+        <div class="card">
+          <h2>Personalize your plan ⚙️</h2>
+          <label>Plan start date</label
+          ><input type="date" id="startDate" /><label
+            >Starting weight (lb)</label
+          ><input
+            type="number"
+            step="0.1"
+            id="settingStartWeight"
+            min="50"
+            max="500"
+          /><label>Long-term goal weight (lb)</label
+          ><input
+            type="number"
+            step="0.1"
+            id="settingGoalWeight"
+            min="50"
+            max="500"
+          /><label>Daily calorie target</label
+          ><input type="number" id="settingCal" min="1200" max="5000" /><label
+            >Daily protein target (g)</label
+          ><input type="number" id="settingProtein" min="20" max="250" /><label
+            >Equipment available</label
+          ><select id="equipment">
+            <option value="backpack">Backpack / household weights</option>
+            <option value="dumbbells">Dumbbells</option>
+            <option value="bands">Resistance bands</option>
+            <option value="mixed">Dumbbells + bands</option>
+            <option value="bodyweight">Bodyweight only</option></select
+          ><button class="primary" style="margin-top: 12px" id="saveSettings">
+            Save settings
+          </button>
+          <p class="muted" id="settingsSaved"></p>
+        </div>
+        <div class="card">
+          <h2>Privacy & installation</h2>
+          <p class="small">
+            Your entries are saved in this browser on this device, not uploaded
+            to a server. Clearing site data or switching browsers can erase
+            them. Use Export data for backups.
+          </p>
+          <p class="small">
+            <b>On iPhone:</b> Open the hosted app in Safari → Share → Add to
+            Home Screen. An HTTPS host is needed for reliable installation and
+            offline support.
+          </p>
+        </div>
+      </section>
+      <footer>💙 Built for steady growth, strength and self-care.</footer>
+    </main>
+    <script>
+      const $ = (id) => document.getElementById(id),
+        today = () => new Date().toLocaleDateString("en-CA");
+      const initial = {
+        start: today(),
+        startWeight: null,
+        goalWeight: null,
+        cal: null,
+        protein: null,
+        equipment: "backpack",
+        weights: [],
+        workouts: [],
+        fuel: {},
+        checks: {},
+      };
+      let data;
+      try {
+        data = Object.assign(
+          {},
+          initial,
+          JSON.parse(localStorage.getItem("sotaGluteClub") || "{}"),
+        );
+      } catch {
+        data = { ...initial };
+      }
+      function save() {
+        localStorage.setItem("sotaGluteClub", JSON.stringify(data));
+      }
+      function dayNum() {
+        return Math.max(
+          0,
+          Math.floor(
+            (new Date(today() + "T12:00:00") -
+              new Date(data.start + "T12:00:00")) /
+              86400000,
+          ),
+        );
+      }
+      function tab(name) {
+        document
+          .querySelectorAll("section")
+          .forEach((x) => (x.hidden = x.id !== name));
+        document
+          .querySelectorAll("[data-tab]")
+          .forEach((x) => x.classList.toggle("active", x.dataset.tab === name));
+        if (name === "track") history();
+        if (name === "train") exercises();
+      }
+      document
+        .querySelectorAll("[data-tab]")
+        .forEach((b) => (b.onclick = () => tab(b.dataset.tab)));
+      const sessions = {
+        A: [
+          [
+            "Loaded hip thrust or sofa glute bridge",
+            "3 × 8–12",
+            "Pause at the top without arching your back.",
+          ],
+          [
+            "Backpack or dumbbell Romanian deadlift",
+            "3 × 8–12",
+            "Hinge at hips; maintain neutral spine.",
+          ],
+          [
+            "Rear-foot-elevated split squat",
+            "2 × 8–10/leg",
+            "Use stable support; regular split squats also work.",
+          ],
+        ],
+        B: [
+          ["Goblet or backpack squat", "3 × 10–12", "Control the descent."],
+          ["Single-leg glute bridge", "2 × 10–12/leg", "Keep pelvis level."],
+          ["Step-up", "2 × 10/leg", "Use a secure low step."],
+          [
+            "Side-lying hip abduction",
+            "2 × 15–20/side",
+            "Move slowly; do not swing.",
+          ],
+        ],
+        C: [
+          [
+            "Banded or bodyweight kickback",
+            "2 × 12–15/leg",
+            "Optional recovery-friendly work.",
+          ],
+          [
+            "Lateral band walk or side steps",
+            "2 × 12/side",
+            "Keep knees aligned.",
+          ],
+          ["Frog pump", "2 × 15–20", "Stop if your lower back feels strained."],
+        ],
+        U: [
+          ["Incline push-up", "2 × 8–12", "Use a stable countertop or bench."],
+          ["Backpack row", "3 × 10–12", "Keep spine steady."],
+          ["Bird dog", "2 × 8/side", "Slow controlled movement."],
+          ["Dead bug", "2 × 8/side", "Keep ribs down."],
+        ],
+      };
+      function exercises() {
+        const key = $("day").value;
+        $("exercises").innerHTML = sessions[key]
+          .map(
+            (e, i) =>
+              `<div class="exercise"><div class="name">${e[0]}</div><div class="note">${e[1]} • ${e[2]}</div><div class="row"><label>Load (lb)<input type="number" min="0" step="0.5" data-i="${i}" data-k="load" placeholder="0"></label><label>Reps done<input type="text" data-i="${i}" data-k="reps" placeholder="10,10,10"></label></div></div>`,
+          )
+          .join("");
+      }
+      $("day").onchange = exercises;
+      $("saveWorkout").onclick = () => {
+        const key = $("day").value;
+        let entries = sessions[key].map((e, i) => ({
+          exercise: e[0],
+          load: document.querySelector(`[data-i="${i}"][data-k="load"]`).value,
+          reps: document.querySelector(`[data-i="${i}"][data-k="reps"]`).value,
+        }));
+        data.workouts.push({ date: today(), session: key, entries });
+        save();
+        $("workoutSaved").textContent = "Workout saved on this device 💙";
+        render();
+      };
+      function render() {
+        const w = data.weights.length
+          ? data.weights[data.weights.length - 1].weight
+          : data.startWeight;
+        $("latestWeight").textContent = w ?? "—";
+        $("goalWeight").textContent = data.goalWeight ?? "—";
+        $("calTarget").textContent = data.cal ?? "—";
+        $("fuelCal").textContent = data.cal ?? "—";
+        $("protTarget").textContent = data.protein ? data.protein + "g" : "—";
+        $("fuelProt").textContent = data.protein ? data.protein + "g" : "—";
+        const hasGoal =
+          Number.isFinite(w) &&
+          Number.isFinite(data.startWeight) &&
+          Number.isFinite(data.goalWeight) &&
+          data.goalWeight !== data.startWeight;
+        $("weightBar").style.width = hasGoal
+          ? Math.max(
+              0,
+              Math.min(
+                100,
+                ((w - data.startWeight) /
+                  (data.goalWeight - data.startWeight)) *
+                  100,
+              ),
+            ) + "%"
+          : "0%";
+        $("weightText").textContent = hasGoal
+          ? w >= data.goalWeight
+            ? "Long-term goal reached—focus on maintenance."
+            : `${Math.max(0, data.goalWeight - w).toFixed(1)} lb to your long-term goal. No deadline required.`
+          : "Add your starting and goal weights in Setup to see progress.";
+        $("weekTag").textContent =
+          "Week " + Math.min(8, Math.floor(dayNum() / 7) + 1) + " of 8";
+        const weekday = new Date().getDay(),
+          names = {
+            0: "Rest",
+            1: "Glute strength (Workout A)",
+            2: "Upper body + core (Workout U)",
+            3: "Recovery / mobility",
+            4: "Glute volume (Workout B)",
+            5: "Recovery",
+            6: "Optional accessory (Workout C)",
+          };
+        $("todayWorkout").textContent = names[weekday];
+        const tasks = [
+          "Eat regular meals and snacks",
+          "Work toward protein target",
+          "Complete planned training or recovery",
+          "Prioritize sleep and hydration",
+        ];
+        const checked = data.checks[today()] || [];
+        $("checklist").innerHTML = tasks
+          .map(
+            (x, i) =>
+              `<label class="check"><input type="checkbox" data-check="${i}" ${checked.includes(i) ? "checked" : ""}>${x}</label>`,
+          )
+          .join("");
+        document.querySelectorAll("[data-check]").forEach(
+          (x) =>
+            (x.onchange = () => {
+              const c = [...document.querySelectorAll("[data-check]")]
+                .filter((y) => y.checked)
+                .map((y) => Number(y.dataset.check));
+              data.checks[today()] = c;
+              save();
+              $("checkText").textContent = `${c.length} of 4 complete`;
+            }),
+        );
+        $("checkText").textContent = `${checked.length} of 4 complete`;
+        const f = data.fuel[today()] || {};
+        $("calEaten").value = f.cal ?? "";
+        $("proteinEaten").value = f.protein ?? "";
+      }
+      $("saveFuel").onclick = () => {
+        data.fuel[today()] = {
+          cal: Number($("calEaten").value),
+          protein: Number($("proteinEaten").value),
+        };
+        save();
+        $("fuelSaved").textContent = "Food log saved 💙";
+      };
+      $("measureDate").value = today();
+      $("saveMeasure").onclick = () => {
+        let w = Number($("measureWeight").value);
+        if (!w || w < 50 || w > 500) {
+          alert("Enter a valid weight.");
+          return;
+        }
+        data.weights.push({
+          date: $("measureDate").value || today(),
+          weight: w,
+          hip: $("measureHip").value,
+          notes: $("measureNotes").value,
+        });
+        data.weights.sort((a, b) => a.date.localeCompare(b.date));
+        save();
+        history();
+        render();
+        $("measureNotes").value = "";
+      };
+      function history() {
+        let ws = data.weights
+          .slice()
+          .reverse()
+          .map(
+            (x) =>
+              `<div class="meal"><b>${x.date}</b> • ${x.weight} lb ${x.hip ? "• Hips " + x.hip + " in" : ""}<div class="muted">${esc(x.notes || "")}</div></div>`,
+          )
+          .join("");
+        let logs = data.workouts
+          .slice()
+          .reverse()
+          .slice(0, 8)
+          .map(
+            (x) => `<div class="meal">${x.date} • Workout ${x.session}</div>`,
+          )
+          .join("");
+        $("history").innerHTML =
+          "<h3>Weight & measurements</h3>" +
+          (ws || '<p class="muted">No check-ins yet.</p>') +
+          "<h3>Recent workouts</h3>" +
+          (logs || '<p class="muted">No workouts logged yet.</p>');
+      }
+      function esc(s) {
+        return String(s).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      }
+      $("exportData").onclick = () => {
+        let a = document.createElement("a"),
+          blob = new Blob([JSON.stringify(data, null, 2)], {
+            type: "application/json",
+          });
+        a.href = URL.createObjectURL(blob);
+        a.download = "sota-glute-club-backup.json";
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      };
+      $("startDate").value = data.start;
+      $("settingStartWeight").value = data.startWeight ?? "";
+      $("settingGoalWeight").value = data.goalWeight ?? "";
+      $("settingCal").value = data.cal ?? "";
+      $("settingProtein").value = data.protein ?? "";
+      $("equipment").value = data.equipment;
+      $("saveSettings").onclick = () => {
+        data.start = $("startDate").value || today();
+        data.startWeight = Number($("settingStartWeight").value) || null;
+        data.goalWeight = Number($("settingGoalWeight").value) || null;
+        data.cal = Number($("settingCal").value) || null;
+        data.protein = Number($("settingProtein").value) || null;
+        data.equipment = $("equipment").value;
+        save();
+        render();
+        $("settingsSaved").textContent = "Settings saved 💙";
+      };
+      render();
+      exercises();
+      if ("serviceWorker" in navigator && location.protocol.startsWith("http"))
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+    </script>
+  </body>
+</html>
